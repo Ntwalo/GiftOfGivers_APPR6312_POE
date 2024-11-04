@@ -1,0 +1,106 @@
+﻿@using Microsoft.AspNetCore.Identity
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GiftOfGivers_APPR6312_POE</title>
+    <link rel="stylesheet" href="~/css/sketch.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/GiftOfGivers_APPR6312_POE.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: orange;
+        }
+
+        .nav-link.dropdown-toggle {
+            
+            color: white; /* Change the text color to white */
+        }
+        .nav-link{
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-fire"></i>Disaster Alleviation Foundation<i class="bi bi-fire"></i></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor02">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house"></i> Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="bi bi-lock-fill"></i> Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Donations">Donate <i class="bi bi-currency-dollar"></i></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Total Donations
+                            </a>
+                            <div class="dropdown-menu" >
+                                <a class="nav-link" asp-area="" asp-controller="MonetaryDonation" asp-action="TotalMonetaryDonations">Total Monetary Donations </a>
+                                <a class="nav-link" asp-area="" asp-controller="GoodsDonations" asp-action="TotalGoods">Total Goods Donations </a>
+                                <a class="nav-link" asp-area="" asp-controller="DisasterMoney" asp-action="TotalDisasterMoney">Total Disaster Money Donations </a>
+                                <a class="nav-link" asp-area="" asp-controller="DisasterGoods" asp-action="TotalDisasterGoods">Total Disaster Goods Donations </a>
+
+
+                            </div>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var userManager = Context.RequestServices.GetService<UserManager<IdentityUser>>();
+                            var userRoles = userManager.GetRolesAsync(await userManager.GetUserAsync(User)).Result;
+
+                            if (userRoles.Contains("Admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Admin
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="MonetaryDonation" asp-action="Index">Monetary Data</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="GoodsDonations" asp-action="Index">Goods Data</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="DisasterDatas" asp-action="Index">Disaster Data</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="DisasterMoney" asp-action="Index">Disaster Money</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="DisasterGoods" asp-action="Index">Disaster Goods</a>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        @* <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="AppRoles" asp-action="Index">Roles</a>
+                        </li> *@
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - GiftOfGivers_APPR6312_POE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
